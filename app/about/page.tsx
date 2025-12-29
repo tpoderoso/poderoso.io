@@ -2,7 +2,7 @@ import { Avatar, AvatarImage } from "@/components/ui/avatar";
 
 export default function About() {
   return (
-    <div>
+    <div className="mx-auto px-4 py-8 max-w-4xl">
       <Avatar className="float-right ml-6 mb-6 w-32 h-32 md:w-40 md:h-40">
         <AvatarImage src="https://github.com/tpoderoso.png" />
       </Avatar>

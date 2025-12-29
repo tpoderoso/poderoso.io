@@ -1,3 +1,5 @@
+"use client";
+
 import { CodeXml } from "lucide-react";
 import { Tooltip, TooltipContent } from "../ui/tooltip";
 import { TooltipTrigger } from "@radix-ui/react-tooltip";
@@ -20,8 +22,8 @@ export default function Footer() {
                   className="hover:text-purple-400 transition-colors duration-300 text-gray-300"
                 />
               </a>
-              <TooltipContent>Código Fonte</TooltipContent>
             </TooltipTrigger>
+            <TooltipContent>Código Fonte</TooltipContent>
           </Tooltip>
         </li>
       </ul>
