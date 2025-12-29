@@ -1,6 +1,8 @@
 import { FolderDown, Mail } from "lucide-react";
 import Link from "next/link";
 import { SiGithub, SiLinkedin } from "react-icons/si";
+import { Tooltip, TooltipContent } from "../ui/tooltip";
+import { TooltipTrigger } from "@radix-ui/react-tooltip";
 
 export default function NavBar() {
   return (
@@ -21,12 +23,19 @@ export default function NavBar() {
           <Link href={"/about"}>Sobre</Link>
         </li>
         <li>
-          <Link href={"/downloads"}>
-            <FolderDown
-              size={20}
-              className="hover:text-purple-400 transition-colors duration-300 text-gray-300 cursor-pointer"
-            />
-          </Link>
+          <Tooltip>
+            <TooltipTrigger>
+              <Link href={"/downloads"}>
+                <FolderDown
+                  size={20}
+                  className="hover:text-purple-400 transition-colors duration-300 text-gray-300 cursor-pointer"
+                />
+              </Link>
+            </TooltipTrigger>
+            <TooltipContent side="bottom">
+              <p>Downloads</p>
+            </TooltipContent>
+          </Tooltip>
         </li>
         <li>
           <a
