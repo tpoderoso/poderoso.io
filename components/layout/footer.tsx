@@ -1,5 +1,3 @@
-"use client";
-
 import { CodeXml } from "lucide-react";
 import { Tooltip, TooltipContent } from "../ui/tooltip";
 import { TooltipTrigger } from "@radix-ui/react-tooltip";

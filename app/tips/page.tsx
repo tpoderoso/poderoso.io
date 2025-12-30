@@ -1,8 +1,8 @@
 import path from "path";
 import fs from "fs";
 import matter from "gray-matter";
-import Link from "next/link";
-import { Badge } from "@/components/ui/badge";
+import RowDocument from "@/components/ui/rowDocument";
+import { DocumentType } from "@/lib/enums";
 
 type Data = {
   title?: string;
@@ -35,14 +35,13 @@ export default async function Tips() {
 
   return (
     <div className="mx-auto px-4 py-8 max-w-4xl">
-      <ul className="list-disc list-outside marker:text-purple-300 mb-3">
-        {tips.map((tip) => (
-          <li key={tip.title}>
-            <Link href={`tips/${tip.slug}`}>{tip.title}</Link>
-            <p className="text-sm text-muted-foreground">{tip.description}</p>
-          </li>
-        ))}
-      </ul>
+      {tips.map((tip) => (
+        <RowDocument
+          key={tip.slug}
+          information={tip}
+          type={DocumentType.Tips}
+        />
+      ))}
     </div>
   );
 }

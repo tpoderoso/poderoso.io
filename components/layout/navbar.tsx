@@ -1,5 +1,3 @@
-"use client";
-
 import { FolderDown, Mail } from "lucide-react";
 import Link from "next/link";
 import { SiGithub, SiLinkedin } from "react-icons/si";
