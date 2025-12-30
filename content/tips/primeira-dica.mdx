@@ -1,16 +1,35 @@
 ---
-title: "Minha primeira dica"
+title: "Verificar Locks"
 date: "30/12/2025"
 author: "Thiago Poderoso"
-description: "A primeira dica"
+description: "Query para identificar queries que estão em lock no banco de dados"
 ---
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas in sagittis tellus. Etiam aliquet ullamcorper tellus, ac malesuada lorem facilisis vel. Sed a odio ultricies, porttitor nisl sed, euismod eros. Aenean quis fermentum mauris. Praesent a finibus dolor. Nulla porttitor augue vitae congue lobortis. Interdum et malesuada fames ac ante ipsum primis in faucibus.
+Através da query abaixo você poderá visualizar as queries que estão em lock no banco de dados.
 
-Curabitur efficitur porttitor turpis, vel fermentum lorem vulputate eget. Vestibulum fermentum nisi sit amet ex laoreet, ac luctus velit lobortis. Proin faucibus tempor laoreet. Aenean vel tincidunt nulla. Curabitur est arcu, commodo cursus mi quis, ullamcorper pharetra metus. Quisque blandit viverra erat, a bibendum ligula tempor eget. Vestibulum consectetur rutrum libero, sed eleifend mauris gravida eu. Aliquam condimentum purus vel turpis lacinia convallis. Quisque lobortis erat mi, vel dignissim sapien venenatis non. Curabitur in tellus finibus, malesuada est sed, sollicitudin libero. Duis eget dui in ante condimentum gravida sed at dolor. Donec ut arcu massa. Vestibulum tincidunt orci nec turpis suscipit aliquam. Donec luctus vel lorem ac congue.
+Para SQL Server
 
-Suspendisse convallis eros eu arcu commodo, non pulvinar massa tempus. Nunc et condimentum lectus. Quisque eleifend mi id neque gravida volutpat. Interdum et malesuada fames ac ante ipsum primis in faucibus. Quisque sodales arcu vitae blandit aliquet. Sed eget sem arcu. Proin venenatis pretium nisl. Maecenas gravida ultricies mi ut cursus. Pellentesque odio neque, posuere quis est a, feugiat malesuada felis. Vivamus at sapien non magna eleifend varius id a quam. Nunc auctor consequat posuere.
-
-Fusce ac est id lorem interdum scelerisque. Maecenas suscipit non nisl sit amet convallis. Fusce vel lorem sed elit accumsan maximus eu et lorem. Donec at tellus arcu. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas lorem diam, iaculis iaculis ligula in, efficitur iaculis augue. Sed vitae leo blandit, blandit lectus vitae, sollicitudin risus.
-
-Vivamus convallis justo vitae massa lacinia sollicitudin. Phasellus sagittis mi ut purus hendrerit sodales. Sed condimentum enim accumsan interdum mollis. Integer eu sapien eleifend, porttitor augue eu, ullamcorper libero. Curabitur ut scelerisque tellus. Proin porta, mauris fermentum rutrum vehicula, nibh dui lobortis nibh, non ornare arcu ligula vitae ligula. Quisque a condimentum velit, eu mollis arcu. Aliquam posuere nunc ligula, vel lobortis dolor lacinia vitae. Donec eget cursus orci.
+```sql
+SELECT DES.Session_ID AS [Root Blocking Session ID], DER.STATUS AS [Blocking Session Request Status],
+DES.Login_Time AS [Blocking Session Login Time], DES.Login_Name AS [Blocking Session Login Name],
+DES.Host_Name AS [Blocking Session Host Name], Coalesce(DER.Start_Time, DES.Last_Request_Start_Time) AS [Request Start Time],
+CASE WHEN DES.Last_Request_End_Time >= DES.Last_Request_Start_Time THEN DES.Last_Request_End_Time ELSE NULL END AS [Request End Time],
+Substring(TEXT, DER.Statement_Start_Offset / 2, CASE WHEN DER.Statement_End_Offset = - 1 THEN DataLength(TEXT) ELSE DER.Statement_End_Offset / 2 END) AS [Executing Command],
+CASE WHEN DER.Session_ID IS NULL THEN 'Blocking session does not have an open request and may be due to an uncommitted transaction.'
+     WHEN DER.Wait_Type IS NOT NULL THEN 'Blocking session is currently experiencing a ' + DER.Wait_Type + ' wait.'
+     WHEN DER.STATUS = 'Runnable' THEN 'Blocking session is currently waiting for CPU time.'
+     WHEN DER.STATUS = 'Suspended' THEN 'Blocking session has been suspended by the scheduler.'
+     ELSE 'Blocking session is currently in a ' + DER.STATUS + ' status.'
+     END AS [Blocking Notes]
+FROM Sys.DM_Exec_Sessions DES(READUNCOMMITTED)
+LEFT JOIN Sys.DM_Exec_Requests DER(READUNCOMMITTED) ON DER.Session_ID = DES.Session_ID
+OUTER APPLY Sys.DM_Exec_Sql_Text(DER.Sql_Handle)
+WHERE DES.Session_ID IN (SELECT Blocking_Session_ID
+                         FROM Sys.DM_Exec_Requests(READUNCOMMITTED)
+                         WHERE Blocking_Session_ID <> 0 AND Blocking_Session_ID
+                         NOT IN (SELECT session_id
+                                 FROM Sys.DM_Exec_Requests(READUNCOMMITTED)
+                                 WHERE Blocking_Session_ID <> 0
+                                 )
+                        );
+```

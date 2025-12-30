@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 
 type Data = {
   title?: string;
+  description?: string;
   slug?: string;
 };
 
@@ -19,7 +20,11 @@ async function getTips(): Promise<Array<Data>> {
     const fileContent = fs.readFileSync(filePath, "utf-8");
     const { data: information } = matter(fileContent);
     const slug = tip.replace(".mdx", "");
-    tips.push({ title: information.title, slug: slug });
+    tips.push({
+      title: information.title,
+      description: information.description,
+      slug: slug,
+    });
   });
 
   return tips;
@@ -33,8 +38,8 @@ export default async function Tips() {
       <ul className="list-disc list-outside marker:text-purple-300 mb-3">
         {tips.map((tip) => (
           <li key={tip.title}>
-            <Badge variant="secondary">SQL Server</Badge>
             <Link href={`tips/${tip.slug}`}>{tip.title}</Link>
+            <p className="text-sm text-muted-foreground">{tip.description}</p>
           </li>
         ))}
       </ul>
