@@ -1,7 +1,7 @@
-import fs from "fs";
 import path from "path";
-import { MDXRemote } from "next-mdx-remote/rsc";
+import fs from "fs";
 import matter from "gray-matter";
+import { MDXRemote } from "next-mdx-remote/rsc";
 
 type TypeData = {
   content: string;
@@ -13,27 +13,21 @@ type TypeData = {
   };
 };
 
-async function getArticle(slug: string): Promise<TypeData> {
-  const filePath = path.join(
-    process.cwd(),
-    "content",
-    "articles",
-    `${slug}.mdx`
-  );
+async function getTips(slug: string): Promise<TypeData> {
+  const filePath = path.join(process.cwd(), "content", "tips", `${slug}.mdx`);
   const fileContent = fs.readFileSync(filePath, "utf-8");
   const { content, data } = matter(fileContent);
 
-  return { content, informations: data };
+  return { content: content, informations: data };
 }
 
-export default async function ArticlePage({
+export default async function TipsPage({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const { content, informations } = await getArticle(slug);
-
+  const { content, informations } = await getTips(slug);
   return (
     <article className="mx-auto px-4 py-8 max-w-4xl">
       <h1 className="text-4xl font-bold mb-2">
