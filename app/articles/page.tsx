@@ -1,37 +1,9 @@
-import fs from "fs";
-import path from "path";
-import matter from "gray-matter";
-import Link from "next/link";
 import RowDocument from "@/components/ui/rowDocument";
-
-type Data = {
-  title?: string;
-  description?: string;
-  slug?: string;
-};
-
-async function getArticles(): Promise<Array<Data>> {
-  const articlesPath = path.join(process.cwd(), "content", "articles");
-  const files = await fs.promises.readdir(articlesPath);
-  const articles: Data[] = [];
-
-  files.forEach((article) => {
-    const filePath = path.join(articlesPath, article);
-    const fileContent = fs.readFileSync(filePath, "utf-8");
-    const { data: information } = matter(fileContent);
-    const slug = article.replace(".mdx", "");
-    articles.push({
-      title: information.title,
-      description: information.description,
-      slug,
-    });
-  });
-
-  return articles;
-}
+import { getDocuments } from "@/lib/api";
+import { DocumentType } from "@/lib/enums";
 
 export default async function Articles() {
-  const articles = await getArticles();
+  const articles = await getDocuments(DocumentType.Article);
 
   return (
     <div className="mx-auto px-4 py-8 max-w-4xl">

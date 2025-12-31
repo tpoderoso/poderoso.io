@@ -18,7 +18,10 @@ export default function Row({ information, type = DocumentType.Article }: Row) {
     <article>
       <div className="flex gap-1">
         <FileText width={12} />
-        <Link className="hover:underline" href={`${type}/${information.slug}`}>
+        <Link
+          className="hover:underline text-primary"
+          href={`${type}/${information.slug}`}
+        >
           {information.title}
         </Link>
       </div>
