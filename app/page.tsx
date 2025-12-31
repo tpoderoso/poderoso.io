@@ -3,12 +3,12 @@ import Typewriter from "@/components/ui/typewriter";
 
 export default function Home() {
   return (
-    <div className="mx-auto px-4 py-8 max-w-4xl">
-      <Avatar className="float-right ml-6 mb-6 w-32 h-32 md:w-40 md:h-40">
+    <section>
+      <Avatar className="mx-auto mb-3 md:float-right md:ml-6 md:mb-6 w-32 h-32 md:w-40 md:h-40">
         <AvatarImage src="https://github.com/tpoderoso.png" />
       </Avatar>
 
-      <section>
+      <div>
         <p className="mb-6">
           Sou desenvolvedor de software há{" "}
           <strong className="text-primary">18 anos</strong>, movido por
@@ -83,7 +83,7 @@ export default function Home() {
           Se você acredita em código bem feito, colaboração e evolução contínua,
           provavelmente vamos nos dar bem. 🚀
         </p>
-      </section>
-    </div>
+      </div>
+    </section>
   );
 }

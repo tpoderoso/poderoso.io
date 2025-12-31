@@ -6,7 +6,7 @@ import { TooltipTrigger } from "@radix-ui/react-tooltip";
 
 export default function NavBar() {
   return (
-    <nav className="flex justify-between gap-3 w-full">
+    <nav className="flex flex-col md:flex-row md:justify-between gap-4 w-full">
       <div>
         <div className="text-primary font-extrabold">
           <Link href={"/"}>Thiago Poderoso</Link>

@@ -6,7 +6,7 @@ export default async function Tips() {
   const tips = await getDocuments(DocumentType.Tips);
 
   return (
-    <div className="mx-auto px-4 py-8 max-w-4xl">
+    <div className="mx-auto md:px-4 md:py-8 max-w-4xl">
       {tips.map((tip) => (
         <RowDocument
           key={tip.slug}
