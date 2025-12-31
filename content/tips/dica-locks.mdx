@@ -1,0 +1,66 @@
+---
+title: "Dominando Locks: Identificando Transações Bloqueadas"
+date: "30/12/2025"
+author: "Thiago Poderoso"
+description: "Query essencial para identificar e diagnosticar transações bloqueadas e locks no SQL Server"
+---
+
+## Identificando e Diagnosticando Locks no SQL Server
+
+Um dos desafios mais comuns em ambientes de banco de dados é lidar com transações bloqueadas. Quando uma sessão adquire um lock em um recurso e outra sessão tenta acessar o mesmo recurso, ocorre um blocking que pode degradar significativamente a performance da aplicação.
+
+### Por que identificar locks é importante?
+
+- **Performance**: Locks podem causar timeouts e aumentar a latência de consultas
+- **Concorrência**: Ajuda a entender o padrão de acesso e conflitos entre transações
+- **Troubleshooting**: Permite identificar quais queries estão causando bloqueios
+- **Otimização**: Com essa informação, você consegue otimizar índices e ajustar a lógica das transações
+
+### A Query para SQL Server
+
+Abaixo está uma query poderosa que fornece informações detalhadas sobre as sessões que estão bloqueando outras:
+
+```sql
+SELECT DES.Session_ID AS [Root Blocking Session ID], DER.STATUS AS [Blocking Session Request Status],
+DES.Login_Time AS [Blocking Session Login Time], DES.Login_Name AS [Blocking Session Login Name],
+DES.Host_Name AS [Blocking Session Host Name], Coalesce(DER.Start_Time, DES.Last_Request_Start_Time) AS [Request Start Time],
+CASE WHEN DES.Last_Request_End_Time >= DES.Last_Request_Start_Time THEN DES.Last_Request_End_Time ELSE NULL END AS [Request End Time],
+Substring(TEXT, DER.Statement_Start_Offset / 2, CASE WHEN DER.Statement_End_Offset = - 1 THEN DataLength(TEXT) ELSE DER.Statement_End_Offset / 2 END) AS [Executing Command],
+CASE WHEN DER.Session_ID IS NULL THEN 'Blocking session does not have an open request and may be due to an uncommitted transaction.'
+     WHEN DER.Wait_Type IS NOT NULL THEN 'Blocking session is currently experiencing a ' + DER.Wait_Type + ' wait.'
+     WHEN DER.STATUS = 'Runnable' THEN 'Blocking session is currently waiting for CPU time.'
+     WHEN DER.STATUS = 'Suspended' THEN 'Blocking session has been suspended by the scheduler.'
+     ELSE 'Blocking session is currently in a ' + DER.STATUS + ' status.'
+     END AS [Blocking Notes]
+FROM Sys.DM_Exec_Sessions DES(READUNCOMMITTED)
+LEFT JOIN Sys.DM_Exec_Requests DER(READUNCOMMITTED) ON DER.Session_ID = DES.Session_ID
+OUTER APPLY Sys.DM_Exec_Sql_Text(DER.Sql_Handle)
+WHERE DES.Session_ID IN (SELECT Blocking_Session_ID
+                         FROM Sys.DM_Exec_Requests(READUNCOMMITTED)
+                         WHERE Blocking_Session_ID <> 0 AND Blocking_Session_ID
+                         NOT IN (SELECT session_id
+                                 FROM Sys.DM_Exec_Requests(READUNCOMMITTED)
+                                 WHERE Blocking_Session_ID <> 0
+                                 )
+                        );
+```
+
+### O que cada coluna representa?
+
+- **Root Blocking Session ID**: ID da sessão que está causando o bloqueio
+- **Blocking Session Request Status**: Status atual da requisição (Running, Runnable, Suspended, etc)
+- **Login Name**: Usuário que está executando a transação bloqueadora
+- **Host Name**: Máquina de origem da conexão
+- **Request Start Time**: Quando a transação começou
+- **Executing Command**: O comando SQL que está sendo executado
+- **Blocking Notes**: Descrição do status atual e tipo de wait
+
+### Dicas práticas
+
+1. **Execute regularmente** durante períodos de pico para identificar padrões
+2. **Analise as queries** bloqueadoras para oportunidades de otimização
+3. **Considere usar índices** nas colunas frequentemente usadas em WHERE e JOIN
+4. **Revise transações longas** que podem estar mantendo locks por muito tempo
+5. **Use NOLOCK (READ UNCOMMITTED)** com cuidado em consultas de leitura
+
+Essa query é essencial no toolkit de qualquer DBA ou desenvolvedor que trabalha com SQL Server!

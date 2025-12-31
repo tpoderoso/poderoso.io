@@ -35,11 +35,11 @@ export default async function ArticlePage({
   const { content, informations } = await getArticle(slug);
 
   return (
-    <article className="mx-auto px-4 py-8 max-w-4xl">
+    <article>
       <h1 className="text-4xl font-bold mb-2 text-secondary">
         {informations.title as string}
       </h1>
-      <div className="text-sm opacity-60 mb-8">
+      <div className="text-sm opacity-60 mb-8 text-tertiary">
         {informations.date as string} • {informations.author as string}
       </div>
       <div className="prose prose-headings:text-foreground prose-p:text-foreground prose-strong:text-foreground prose-li:text-foreground prose-code:text-foreground max-w-none prose-p:mb-6 prose-headings:mb-5">

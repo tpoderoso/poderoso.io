@@ -47,34 +47,38 @@ export default function NavBar() {
           </Tooltip>
         </li>
         <li>
-          <a
-            href="https://www.linkedin.com/in/tpoderoso/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <SiLinkedin
-              size={18}
-              className="hover:text-primary transition-colors duration-300 text-gray-300 cursor-pointer"
-            />
-          </a>
+          <Tooltip>
+            <TooltipTrigger>
+              <a
+                href="https://www.linkedin.com/in/tpoderoso/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <SiLinkedin
+                  size={18}
+                  className="hover:text-primary transition-colors duration-300 text-gray-300 cursor-pointer"
+                />
+              </a>
+            </TooltipTrigger>
+            <TooltipContent side="bottom">LinkedIn</TooltipContent>
+          </Tooltip>
         </li>
         <li>
-          <a
-            href="https://www.github.com/tpoderoso/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <SiGithub
-              size={20}
-              className="hover:text-primary transition-colors duration-300 text-gray-300 cursor-pointer"
-            />
-          </a>
-        </li>
-        <li>
-          <Mail
-            size={20}
-            className="hover:text-primary transition-colors duration-300 text-gray-300 cursor-pointer"
-          />
+          <Tooltip>
+            <TooltipTrigger>
+              <a
+                href="https://www.github.com/tpoderoso/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <SiGithub
+                  size={20}
+                  className="hover:text-primary transition-colors duration-300 text-gray-300 cursor-pointer"
+                />
+              </a>
+            </TooltipTrigger>
+            <TooltipContent side="bottom">GitHub</TooltipContent>
+          </Tooltip>
         </li>
       </ul>
     </nav>

@@ -29,7 +29,7 @@ export default async function TipsPage({
   const { slug } = await params;
   const { content, informations } = await getTips(slug);
   return (
-    <article className="mx-auto px-4 py-8 max-w-4xl">
+    <article>
       <h1 className="text-4xl font-bold mb-2">
         {informations.title as string}
       </h1>

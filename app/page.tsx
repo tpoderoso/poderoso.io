@@ -1,5 +1,4 @@
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import Typewriter from "@/components/ui/typewriter";
 
 export default function Home() {
   return (
