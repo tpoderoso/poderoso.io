@@ -33,7 +33,7 @@ export default function NavBar() {
             <TooltipContent side="bottom">Dicas</TooltipContent>
           </Tooltip>
         </li>
-        <li>
+        {/* <li>
           <Tooltip>
             <TooltipTrigger>
               <Link href={"/downloads"}>
@@ -45,7 +45,7 @@ export default function NavBar() {
             </TooltipTrigger>
             <TooltipContent side="bottom">Downloads</TooltipContent>
           </Tooltip>
-        </li>
+        </li> */}
         <li>
           <Tooltip>
             <TooltipTrigger>

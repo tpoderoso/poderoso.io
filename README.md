@@ -1,36 +1,106 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 Poderoso.io
 
-## Getting Started
+## 📋 Sobre o Projeto
 
-First, run the development server:
+**Poderoso.io** é um site pessoal construído com as tecnologias mais modernas do ecossistema web. Aqui você encontra:
+
+- 📖 **Artigos**: Conteúdo aprofundado sobre desenvolvimento e arquitetura de software
+- 💡 **Dicas**: Snippets, queries SQL e técnicas práticas do dia-a-dia
+- 📚 **Recursos**: Downloads de materiais úteis
+- ℹ️ **Sobre**: Minha trajetória, formação e experiência profissional
+
+## 🛠️ Stack Tecnológico
+
+- **Framework**: [Next.js 16](https://nextjs.org) (App Router)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com)
+- **UI Components**: [shadcn/ui](https://ui.shadcn.com)
+- **MDX**: Suporte para conteúdo dinâmico em Markdown
+- **Icons**: [Lucide React](https://lucide.dev) + [React Icons](https://react-icons.github.io/react-icons/)
+- **Type Safety**: TypeScript
+- **Fonts**: Geist (Vercel)
+
+## 🚀 Como Começar
+
+### Pré-requisitos
+
+- Node.js 18+
+- npm ou yarn
+
+### Instalação
+
+```bash
+# Clone o repositório
+git clone https://github.com/tpoderoso/poderoso.io.git
+cd poderoso.io
+
+# Instale as dependências
+npm install
+```
+
+### Desenvolvimento
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abra [http://localhost:3000](http://localhost:3000) no seu navegador para ver o resultado.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+O site auto-atualiza conforme você edita os arquivos.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Build e Produção
 
-## Learn More
+```bash
+# Build para produção
+npm run build
 
-To learn more about Next.js, take a look at the following resources:
+# Inicie o servidor em produção
+npm run start
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📁 Estrutura do Projeto
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+├── app/                    # Rotas e layouts Next.js
+│   ├── page.tsx           # Página home
+│   ├── articles/          # Seção de artigos
+│   ├── tips/              # Seção de dicas
+│   ├── downloads/         # Downloads
+│   └── layout.tsx         # Layout root
+├── components/            # Componentes React
+│   ├── layout/           # Navbar, Footer
+│   ├── mdx/              # Componentes para MDX
+│   └── ui/               # Componentes shadcn/ui
+├── content/              # Conteúdo MDX
+│   ├── articles/         # Artigos em .mdx
+│   └── tips/             # Dicas em .mdx
+├── lib/                  # Utilitários e funções
+│   ├── api.ts           # Funções server-side
+│   ├── enums.ts         # Enums compartilhados
+│   └── utils.ts         # Helpers e utilidades
+└── public/              # Arquivos estáticos
+```
 
-## Deploy on Vercel
+## 📦 Dependências Principais
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- `next`: Framework web moderno
+- `tailwindcss`: Utility-first CSS
+- `shadcn-ui`: Componentes UI de alta qualidade
+- `next-mdx-remote`: MDX parsing para Next.js
+- `gray-matter`: Parsing de frontmatter YAML
+- `lucide-react`: Ícones SVG
+- `react-icons`: Mais ícones
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🔗 Links Úteis
+
+- 💼 [LinkedIn](https://linkedin.com/in/tpoderoso/)
+- 🐙 [GitHub](https://github.com/tpoderoso/)
+
+## 📄 License
+
+Este projeto é de uso pessoal. Sinta-se à vontade para usar como referência ou inspiração para seu próprio site.
+
+## 🤝 Sugestões
+
+Se tiver sugestões, feedback ou encontrar algum issue, entre em contato comigo!
+
+---
